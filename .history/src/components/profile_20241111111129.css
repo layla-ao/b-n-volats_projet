@@ -1,0 +1,18 @@
+.profile-section {
+    background-color: #eee;
+  }
+  
+  .profile-avatar {
+    width: 150px;
+  }
+  
+  .project-status-title {
+    font-size: 0.77rem;
+    color: #007bff;
+    font-style: italic;
+  }
+  
+  .small-text {
+    font-size: 0.77rem;
+  }
+  

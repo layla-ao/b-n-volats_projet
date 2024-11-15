@@ -1,0 +1,22 @@
+/* Navbar.css */
+.logo {
+    height: 60px;
+    margin-right: 20px;
+  }
+  
+  
+  .link {
+    color: rgb(180, 12, 12);
+    text-decoration: none;
+    margin-right: 15px;
+  }
+  
+  .grow {
+    flex-grow: 1;
+  }
+  
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+  }
+  
