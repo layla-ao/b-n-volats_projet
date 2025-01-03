@@ -1,0 +1,169 @@
+
+
+function App() {
+  const [userData, setUserData] = useState({
+    name: 'Laila Aouadi',
+    email: 'Laila@gmail.com',
+    phone: '(216) 51819776',
+    address: 'Ariana, Tunisie',
+    poste: 'Santé',
+    date: '12/11/1999'
+  });
+
+  // Function to update user data
+  const updateUserData = (newData) => {
+    setUserData(newData);
+  };
+
+  return (
+    <Router>
+      <Routes>
+        {/* Navbar pour Home, Login, Signup */}
+        <Route
+          path="/"
+          element={
+            <div>
+              <nav className="navbar">
+                <h1 className="logo">نبض <span>التطوع</span></h1>
+                <Link to="/" className="nav-button home-button">Accueil</Link>
+                <div className="nav-buttons">
+                  <Link to="/signup" className="nav-button">S'inscrire</Link>
+                  <Link to="/login" className="nav-button">Se connecter</Link>
+                </div>
+              </nav>
+              <Home />
+            </div>
+          }
+        />
+
+        <Route
+          path="/signup"
+          element={
+            <div>
+              <nav className="navbar">
+                <h1 className="logo">نبض <span>التطوع</span></h1>
+                <Link to="/" className="nav-button home-button">Accueil</Link>
+                <div className="nav-buttons">
+                  <Link to="/signup" className="nav-button">S'inscrire</Link>
+                  <Link to="/login" className="nav-button">Se connecter</Link>
+                </div>
+              </nav>
+              <Signup />
+            </div>
+          }
+        />
+
+        <Route
+          path="/login"
+          element={
+            <div>
+              <nav className="navbar">
+                <h1 className="logo">نبض <span>التطوع</span></h1>
+                <Link to="/" className="nav-button home-button">Accueil</Link>
+                <div className="nav-buttons">
+                  <Link to="/signup" className="nav-button">S'inscrire</Link>
+                  <Link to="/login" className="nav-button">Se connecter</Link>
+                </div>
+              </nav>
+              <Login />
+            </div>
+          }
+        />
+
+        {/* Pages avec Layout et Navbar/ Footer */}
+        <Route element={<Layout />}>
+          <Route path="/accueil" element={<Accueil />} />
+          <Route path="/acueil" element={<Acueil />} />
+          <Route path="/profile" element={<Profile userData={userData} updateUserData={updateUserData} />} />
+          <Route path="/edit-profile" element={<EditProfile userData={userData} updateUserData={updateUserData} />} />
+          <Route path="/sante" element={<Sante />} />
+          <Route path="/sociale" element={<Sociale />} />
+          <Route path="/animaux" element={<Animaux />} />
+          <Route path="/publication" element={<Publication />} />
+        </Route>
+      </Routes>
+    </Router>
+  );
+}
+
+
+export default App;
+
+
+
+// Fonction ProtectedRoute
+const ProtectedRoute = ({ children, isAuthenticated }) => {
+  return isAuthenticated ? children : <Navigate to="/" />;
+};
+
+function App() {
+  const [userData, setUserData] = useState({
+    name: 'Laila Aouadi',
+    email: 'Laila@gmail.com',
+    phone: '(216) 51819776',
+    address: 'Ariana, Tunisie',
+    poste: 'Santé',
+    date: '12/11/1999',
+    role: 'admin', // Ajouter un rôle pour l'utilisateur (exemple : 'user' ou 'admin')
+  });
+
+  const [activeSection, setActiveSection] = useState('opportunity');
+
+  // Fonction pour mettre à jour les données de profil
+  const updateUserData = (newData) => {
+    setUserData(newData);
+  };
+
+  return (
+    <Router>
+      <Content
+        userData={userData}
+        activeSection={activeSection}
+        updateUserData={updateUserData}
+      />
+    </Router>
+  );
+}
+
+function Content({ userData, activeSection, updateUserData }) {
+  const location = useLocation();
+  const isDashboard = location.pathname === '/dashboard';
+
+  return (
+    <div className="App">
+      {/* Affiche le Navbar uniquement si ce n'est pas le Dashboard */}
+      {!isDashboard && <Navbar />}
+      <div className="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile userData={userData} updateUserData={updateUserData} />} />
+          <Route
+            path="/edit-profile"
+            element={<EditProfile userData={userData} updateUserData={updateUserData} />}
+          />
+          <Route path="/accueil" element={<Accueil />} />
+          <Route path="/event" element={<Event />} />
+          <Route path="/sante" element={<Sante />} />
+          <Route path="/sociale" element={<Sociale />} />
+          <Route path="/animaux" element={<Animaux />} />
+          <Route path="/publication" element={<Publication />} />
+          {/* Route sécurisée pour le Dashboard */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute isAuthenticated={userData.role === 'admin'}>
+                <Dashboard activeSection={activeSection} />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </div>
+      {/* Affiche le Footer uniquement si ce n'est pas le Dashboard */}
+      {!isDashboard && <Footer />}
+      {!isDashboard && <Chatbot />}
+    </div>
+  );
+}
+
+export default App;
+
